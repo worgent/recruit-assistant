@@ -1,0 +1,30 @@
+{
+  "CommunicateLimit": 5,
+  "ResumeFilterLimit": 100,
+  "ResumePageLimit": 10,
+  "EducationList": [
+    "本科", "硕士"
+  ],
+  "SpecialList": [
+    "计算机", "软件", "网络", "通信"
+  ],
+  "AgeLowLimit": 20,
+  "AgeHighLimit": 32,
+
+  "ExperienceLowLimit": 0,
+  "ExperienceHighLimit": 8,
+
+  "SalaryLowLimit": 12,
+  "SalaryHighLimit": 16,
+
+  "ActiveTimeList": [
+    "刚刚活跃", "今日活跃"
+  ],
+
+  "JobSeekingStatusList": [
+    "离职-随时到岗", "在职-月内到岗", "在职-暂不考虑"
+  ],
+
+
+  "WebOperationInterval": 5
+}
