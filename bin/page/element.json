@@ -1,0 +1,115 @@
+{
+  "登录页面": {
+    "用户名输入框": {
+      "method": "css selector",
+      "value": "input[name='account']"
+    },
+    "密码输入框": {
+      "method": "css selector",
+      "value": "input[name='password']"
+    },
+    "密码登录": {
+      "method": "css selector",
+      "value": "span.link-signin.cur"
+    },
+    "二维码登录": {
+      "method": "css selector",
+      "value": "span.link-scan"
+    },
+    "验证码图片": {
+      "method": "css selector",
+      "value": ".qrcodeimg-box img"
+    },
+    "验证码": {
+      "method": "css selector",
+      "value": ".sign-pwd .row-code img"
+    },
+    "验证码输入框": {
+      "method": "name",
+      "value": "captcha"
+    },
+    "登录": {
+      "method": "css selector",
+      "value": "button[type='submit']"
+    },
+    "验证码错误": {
+      "method": "css selector",
+      "value": ".sign-form.sign-pwd .tip-error"
+    }
+  },
+  "首页": {
+    "消息": {
+      "method": "css selector",
+      "value": "a[ka='header-message']"
+    },
+    "推荐牛人": {
+      "method": "css selector",
+      "value": "a[ka='menu-geek-recommend']"
+    }
+  },
+  "消息页面": {
+    "消息列表": {
+      "method": "css selector",
+      "value": ".user-list ul li"
+    },
+    "Boss信息": {
+      "method": "css selector",
+      "value": ".chat-record .fl span"
+    },
+    "职位信息": {
+      "method": "css selector",
+      "value": ".chat-position-bar a span"
+    },
+    "聊天内容": {
+      "method": "css selector",
+      "value": ".chat-message .item-friend  .text span"
+    },
+    "自己的消息": {
+      "method": "css selector",
+      "value": ".chat-message .item-myself"
+    },
+    "发送简历": {
+      "method": "css selector",
+      "value": ".btn-resume"
+    },
+    "发送简历确认": {
+      "method": "css selector",
+      "value": ".sentence-popover.panel-resume .btn.btn-sure"
+    },
+    "消息对话框": {
+      "method": "css selector",
+      "value": ".chat-input"
+    },
+    "发送按钮": {
+      "method": "css selector",
+      "value": ".btn.btn-send"
+    },
+    "职位链接": {
+      "method": "css selector",
+      "value": ".chat-position-bar a"
+    },
+    "岗位要求": {
+      "method": "css selector",
+      "value": ".job-detail .detail-content div[class='job-sec'] .text"
+    },
+    "职位地址": {
+      "method": "css selector",
+      "value": ".location-address"
+    }
+  },
+  "推荐牛人": {
+    "候选人列表": {
+      "method": "css selector",
+      "value": "#recommend-list .candidate-card>ul>li[data-uid]"
+    },
+    "详情页面": {
+      "method": "css selector",
+      "value": ".dialog-resume-full"
+    },
+    "详情关闭按钮": {
+      "method": "css selector",
+      "value": ".dialog-resume-full a[ka='dialog_close']"
+    }
+  }
+
+}

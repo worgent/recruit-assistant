@@ -169,7 +169,7 @@ func getChromeVer() string {
 }
 
 func getUnixChromeVer() string {
-	cmd := exec.Command("sh", "-c", fmt.Sprintf("%s --version", config.ChromeApp))
+	cmd := exec.Command("sh", "-c", fmt.Sprintf("%s --version", config.RConfig.ChromeApp))
 	cmdOutput := &bytes.Buffer{}
 	cmd.Stdout = cmdOutput
 	err := cmd.Run()

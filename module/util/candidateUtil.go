@@ -19,6 +19,7 @@ type CandidateUtil struct {
 
 //获取期望薪资上下限
 func (c *CandidateUtil) GetEducationPeriod(educationPeriod string) (int, int) {
+
 	educationPeriod = strings.Replace(educationPeriod, "至今",
 		string(time.Now().Year()), -1)
 	educationPeriodStrs := strings.Split(educationPeriod, "-")

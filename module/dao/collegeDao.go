@@ -7,6 +7,7 @@ import (
 	"database/sql"
 	_ "github.com/go-sql-driver/mysql"
 	"log"
+	cf "goBoss/config"
 )
 
 //教育信息
@@ -18,7 +19,7 @@ type CollegeDao struct {
 func (c *CollegeDao) FindCollege(name string) (entity.College, error) {
 	college := entity.College{}
 
-	db, err := sql.Open("mysql", "root:@tcp(localhost:3306)/boss")
+	db, err := sql.Open("mysql", cf.RConfig.MysqlConnectStr)
 	if err != nil {
 		log.Println(err)
 		return college, err

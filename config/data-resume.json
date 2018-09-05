@@ -1,4 +1,7 @@
 {
+
+  "MysqlConnectStr": "root:@tcp(localhost:3306)/boss",
+  "ChromeApp": "/Applications/Google\\ Chrome.app/Contents/MacOS/Google\\ Chrome",
   "CommunicateLimit": 5,
   "ResumeFilterLimit": 100,
   "ResumePageLimit": 10,

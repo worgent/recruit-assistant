@@ -22,6 +22,7 @@ import (
 
 var resumeFirst = true
 var candidateUtil = util.CandidateUtil{}
+var simulateUtil = util.SimulateUtil{}
 var logUtil = util.MyLog{}
 var communicateLimit = cf.RConfig.CommunicateLimit
 var resumePageLimit = cf.RConfig.ResumePageLimit
@@ -40,9 +41,9 @@ type Resume struct {
 
 //处理入口
 func (m *Resume) Run() {
-	time.Sleep(cf.RConfig.WebOperationInterval * time.Second)
+	simulateUtil.Delay(cf.RSConfig.LoginDelay)
 	m.EnterResume()
-	time.Sleep(cf.RConfig.WebOperationInterval * time.Second)
+	simulateUtil.Delay(cf.RSConfig.RecommendDelay)
 	m.DealResumes()
 	//todo 增加数据库导入
 }
@@ -64,7 +65,6 @@ func (m *Resume) DealResumes() {
 	for {
 		m.DealOnePage(&dealCandidateNum)
 		m.NextPage(&dealPageCount)
-		time.Sleep(cf.RConfig.WebOperationInterval * time.Second)
 
 		//沟通超过10个人，停止
 		if len(m.CommunicateCandidateList) >= communicateLimit {
@@ -110,6 +110,8 @@ func (m *Resume) NextPage(dealCount *int) {
 	ret, e := m.Eg.Session().ExecuteScript(script, args)
 	logUtil.Debug(fmt.Sprintf("ExecuteScript %s, ret %s\n", script, string(ret)))
 	Assert(e)
+	simulateUtil.Delay(cf.RSConfig.NextPageDelay)
+
 }
 
 //检查候选人列表，并根据情况发起沟通
@@ -162,10 +164,9 @@ func (m *Resume) DealOnePage(dealCandidateNum *int) {
 			logUtil.Info(fmt.Sprintf("候选人不合符要求: %s\n", info.BriefDump()))
 			continue
 		}
-
+		simulateUtil.Delay(cf.RSConfig.ReadBriefDelay)
 		//通过筛选，点击详情获取信息
-		ms.Click()
-		time.Sleep(cf.RConfig.WebOperationInterval * time.Second)
+		m.openResumeDetail(ms)
 		detailElement, e := m.Eg.GetElement("推荐牛人", "详情页面").GetEle(m.Eg.Session())
 		Assert(e)
 		info.Content, _ = detailElement.Text()
@@ -176,47 +177,55 @@ func (m *Resume) DealOnePage(dealCandidateNum *int) {
 		}
 		logUtil.Debug(fmt.Sprintf("第[%d]条候选人更新教育详细信息为: %s\n", i+1, info.EducationMapDump()))
 
-		//关闭详情
-		clickElement, e := m.Eg.GetElement("推荐牛人", "详情关闭按钮").GetEle(m.Eg.Session())
-		Assert(e)
-		clickElement.Click()
-		time.Sleep(cf.RConfig.WebOperationInterval * time.Second)
+
 
 		//进行二次筛选，主要筛选毕业时间，工作经历和薪资的关系
 		info.DealResult = candidateUtil.FilterCandidateDetail(info)
 		//只要0-为通过
 		if info.DealResult != 0 {
 			logUtil.Info(fmt.Sprintf("候选人二面不合符要求: %s\n", info.EducationMapDump()))
+			//关闭详情
+			m.closeResumeDetail()
 			continue
 		}
 
 		//通过筛选，进行沟通
-		e = m.communicateCandidate(ms)
-		if e != nil {
-			logUtil.Error(fmt.Sprintf("沟通候选人%s-%s失败，原因%s\n",
-				info.UID, info.Name, e.Error()))
-			continue
-		}
+		e = m.communicateCandidate(detailElement, &info)
 
-		m.CommunicateCandidateList = append(m.CommunicateCandidateList, info.UID)
-		logUtil.Info(fmt.Sprintf("沟通候选人%s-%s成功\n",
-			info.UID, info.Name))
-
-		time.Sleep(cf.RConfig.WebOperationInterval * time.Second)
+		//关闭详情,沟通后会自动关闭
+		//m.closeResumeDetail()
 	}
 
 	*dealCandidateNum = len(ResumeList)
 }
 
 //模拟点击打招呼
-func (m *Resume) communicateCandidate(element webdriver.WebElement) error {
-	ele, e := element.FindElement(webdriver.CSS_Selector, ".sider-op .btn-greet")
-	if e == nil {
-		ele.Click()
-		return nil
-	} else {
+func (m *Resume) communicateCandidate(element webdriver.WebElement, info *entity.Candidate) error {
+	ele, e := element.FindElement(webdriver.CSS_Selector, ".dialog-resume-full .dialog-footer .btn-greet")
+	if e != nil {
+		logUtil.Error(fmt.Sprintf("沟通候选人%s-%s失败，原因%s\n",
+			info.UID, info.Name, e.Error()))
 		return e
 	}
+	ele.Click()
+
+	m.CommunicateCandidateList = append(m.CommunicateCandidateList, info.UID)
+	logUtil.Info(fmt.Sprintf("沟通候选人%s-%s成功\n",
+		info.UID, info.Name))
+
+	simulateUtil.Delay(cf.RSConfig.CommunicateDelay)
+	return nil
+}
+func (m *Resume) openResumeDetail(element webdriver.WebElement)  {
+	 element.Click()
+	simulateUtil.Delay(cf.RSConfig.OpenResumeDetailDelay)
+
+}
+func (m *Resume) closeResumeDetail() {
+	clickElement, e := m.Eg.GetElement("推荐牛人", "详情关闭按钮").GetEle(m.Eg.Session())
+	Assert(e)
+	clickElement.Click()
+	simulateUtil.Delay(cf.RSConfig.CloseResumeDetailDelay)
 }
 
 //获取元素指定样式的文本

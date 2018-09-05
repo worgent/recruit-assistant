@@ -15,12 +15,13 @@ import (
 var (
 	Config  UserConfig
 	RConfig ResumeConfig
+
+	RSConfig ResumeSimulateConfig
 	Environ Env
 )
 
 const (
 	//ChromeReg = `SOFTWARE\Google\Chrome\BLBeacon`
-	ChromeApp = `/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome`
 )
 
 //用户配置
@@ -61,6 +62,10 @@ type UserConfig struct {
 
 //简历招聘配置
 type ResumeConfig struct {
+	//数据库配置
+	MysqlConnectStr string `json:"MysqlConnectStr"`
+
+	ChromeApp	string `json:"ChromeApp"`
 	//沟通上限
 	CommunicateLimit int `json:"CommunicateLimit"`
 	//简历筛选上限
@@ -96,6 +101,30 @@ type ResumeConfig struct {
 	WebOperationInterval time.Duration `json:"WebOperationInterval"`
 }
 
+type ResumeSimulateConfig struct{
+	//默认延时
+	WebOperationDelay time.Duration `json:"WebOperationDelay"`
+	//登录完成后延时
+	LoginDelay time.Duration `json:"LoginDelay"`
+	//点击推荐牛人后延时
+	RecommendDelay time.Duration `json:"RecommendDelay"`
+	//翻页延时
+	NextPageDelay time.Duration `json:"NextPageDelay"`
+	//点击简历详情延时
+	OpenResumeDetailDelay time.Duration `json:"OpenResumeDetailDelay"`
+	//关闭简历详情延时
+	CloseResumeDetailDelay time.Duration `json:"CloseResumeDetailDelay"`
+	//读简历详情延时
+	ReadBriefDelay time.Duration `json:"ReadBriefDelay"`
+	//读简历详情延时
+	ReadDetailDelay time.Duration `json:"ReadDetailDelay"`
+	//沟通延时
+	CommunicateDelay time.Duration `json:"CommunicateDelay"`
+
+
+
+}
+
 type Env struct {
 	Root       string
 	Sys        string
@@ -113,14 +142,20 @@ func GetCurrentDirectory() string {
 }
 
 func init() {
-	//Environ.Root = GetCurrentDirectory()
-	Environ.Root = "/Users/hadoop/go/src/goBoss"
+	Environ.Root = GetCurrentDirectory()
 	// Environ.Root, _ = filepath.Abs(filepath.Dir(os.Args[0]))
 	Environ.Sys = runtime.GOOS
 	Environ.QrcodeFile = "qrcode.png"
 
-	// 解析json
+	//检查文件，如不存在
 	data, err := ioutil.ReadFile(fmt.Sprintf("%s/config/data.json", Environ.Root))
+	if err != nil {
+		log.Printf("打开用户配置文件失败，切换/Users/hadoop/go/src/goBoss! Error: %s", err.Error())
+		Environ.Root = "/Users/hadoop/go/src/goBoss"
+	}
+
+	// 解析json
+	data, err = ioutil.ReadFile(fmt.Sprintf("%s/config/data.json", Environ.Root))
 	if err != nil {
 		log.Panicf("打开用户配置文件失败! Error: %s", err.Error())
 	}
@@ -137,5 +172,15 @@ func init() {
 	err = json.Unmarshal(data, &RConfig)
 	if err != nil {
 		log.Panicf("解析招聘配置文件data-resume.json失败!Error: %s", err.Error())
+	}
+
+	//解析simulate-data
+	data, err = ioutil.ReadFile(fmt.Sprintf("%s/config/data-simulate.json", Environ.Root))
+	if err != nil {
+		log.Panicf("打开模拟配置文件失败! Error: %s", err.Error())
+	}
+	err = json.Unmarshal(data, &RSConfig)
+	if err != nil {
+		log.Panicf("解析模拟配置文件data-simulate.json失败!Error: %s", err.Error())
 	}
 }
