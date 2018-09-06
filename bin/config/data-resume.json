@@ -1,4 +1,6 @@
 {
+
+  "MysqlConnectStr": "root:@tcp(localhost:3306)/boss",
   "ChromeApp": "/Applications/Google\\ Chrome.app/Contents/MacOS/Google\\ Chrome",
   "CommunicateLimit": 5,
   "ResumeFilterLimit": 100,
@@ -26,6 +28,12 @@
     "离职-随时到岗", "在职-月内到岗", "在职-暂不考虑"
   ],
 
-
-  "WebOperationInterval": 5
+  "SalaryExperienceConfig" : {
+    "0" : [6,8],
+    "1" : [7,9],
+    "2" : [10,12],
+    "3" : [10,12],
+    "4" : [10,15],
+    "5" : [10,15]
+  }
 }

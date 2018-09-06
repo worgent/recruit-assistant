@@ -12,6 +12,7 @@ import (
 	dao "goBoss/module/dao"
 	"goBoss/module/entity"
 	"goBoss/module/util"
+	"time"
 )
 
 var logUtil = util.MyLog{}
@@ -44,12 +45,14 @@ func main() {
 
 func setLog() {
 	//set logfile Stdout
-	logFile, logErr := os.OpenFile(fmt.Sprintf("%s/boss.log", cf.Environ.Root), os.O_CREATE|os.O_RDWR|os.O_APPEND, 0666)
+	logFile, logErr := os.OpenFile(fmt.Sprintf("%s/boss-%s.log",
+		cf.Environ.Root, time.Now().Format("2006-01-02-15-04-05")),
+		os.O_CREATE|os.O_RDWR|os.O_APPEND, 0666)
 	if logErr != nil {
 		fmt.Println("Fail to find", logFile, "cServer start Failed")
 		os.Exit(1)
 	}
-	//log.SetOutput(logFile)
+	log.SetOutput(logFile)
 	log.SetFlags(log.LstdFlags | log.Lshortfile)
 }
 

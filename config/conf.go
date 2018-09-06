@@ -96,9 +96,9 @@ type ResumeConfig struct {
 
 	Be985 bool `json:"Be985"`
 	Be211 bool `json:"Be211"`
-	////////以下为模拟行为参数
 
-	WebOperationInterval time.Duration `json:"WebOperationInterval"`
+	//薪酬-经验对应
+	SalaryExperienceConfig map[int][]int `json:"SalaryExperienceConfig"`
 }
 
 type ResumeSimulateConfig struct{

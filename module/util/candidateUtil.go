@@ -113,13 +113,7 @@ func (c *CandidateUtil) FilterCandidateDetail(candidate entity.Candidate) int {
 	workYear := time.Now().Year() - firstEducation.OutTime
 
 	//薪酬范围
-	salaryConfig := make(map[int][]int)
-	salaryConfig[0] = []int{6, 8}
-	salaryConfig[1] = []int{7, 9}
-	salaryConfig[2] = []int{9, 12}
-	salaryConfig[3] = []int{9, 12}
-	salaryConfig[4] = []int{10, 15}
-	salaryConfig[5] = []int{10, 15}
+	salaryConfig := cf.RConfig.SalaryExperienceConfig
 
 	salaryLimit, e := salaryConfig[workYear]
 	if e != true {

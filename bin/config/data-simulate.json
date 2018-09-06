@@ -1,0 +1,13 @@
+{
+  "WebOperationDelay": 5,
+  "LoginDelay": 5,
+  "RecommendDelay": 5,
+  "NextPageDelay": 5,
+  "OpenResumeDetailDelay": 5,
+
+  "CloseResumeDetailDelay": 10,
+  "ReadBriefDelay": 5,
+  "ReadDetailDelay": 10,
+
+  "CommunicateDelay": 5
+}

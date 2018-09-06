@@ -1,8 +1,9 @@
 package util
 
 import (
+		"time"
+	"log"
 	"fmt"
-	"time"
 )
 
 type MyLog struct {
@@ -25,6 +26,8 @@ func (m *MyLog) Debug(msg string) {
 }
 
 func (m *MyLog) log(level string, msg string) {
+	log.Printf("[%s]-[%s]-%s\n", time.Now().Format("2006-01-02 15:04:05"),
+		level, msg)
 	fmt.Printf("[%s]-[%s]-%s\n", time.Now().Format("2006-01-02 15:04:05"),
 		level, msg)
 }
